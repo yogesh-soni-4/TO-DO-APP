@@ -2,24 +2,24 @@
 
 ## Description
 
-The Task Reminder App is a simple yet powerful task management application that enables users to add, edit, and delete tasks efficiently. Additionally, it offers features like task completion tracking, date sorting, notifications & reminder, and task export capabilities.
+The DAY PALNNER APP is a simple yet powerful task management application that enables users to add, edit, and delete tasks efficiently. Additionally, it offers features like task completion tracking, date sorting, searching notes, setting priority of each task, notifications & reminder, and task export capabilities.
 
 ## Features
 
 - Add, edit, and delete tasks
 - Mark tasks as complete
 - Sort tasks by date
-- Filter tasks by updateAt
-- Export tasks as PDF, CSV, and Excel
+- Search a task by title
+- Filter tasks by creation date
 - Notification & Reminder
 - Dark Mode & Light Mode
 - Responsive Design
 
 ## Demo
-[🔴Task Reminder App download⬇️ 📍](https://github.com/4mritGiri/Task_Reminder_Apps/releases/download/v1.3.0/TaskReminder.apk)
+[🚀 DAY PALNNER APP download ⬇️📍](https://github.com/4mritGiri/Task_Reminder_Apps/releases/download/v1.3.0/TaskReminder.apk)
 
 ## Table of Contents
-- [Task Reminder App](#task-reminder-app)
+- [DAY PALNNER APP](#task-reminder-app)
   - [Description](#description)
   - [Features](#features)
   - [Demo](#demo)
@@ -27,11 +27,11 @@ The Task Reminder App is a simple yet powerful task management application that 
   - [Screenshots](#screenshots)
   - [Built with](#built-with)
     - [Dependencies](#dependencies)
-    - [Dev Dependencies](#dev-dependencies)
-  - [Getting Started](#getting-started)
+    <!-- - [Dev Dependencies](#dev-dependencies) -->
+  <!-- <!-- - [Getting Started](#getting-started)
     - [Prerequisites](#prerequisites)
       - [Flutter](#flutter)
-    - [Installation](#installation)
+    - [Installation](#installation) -->
   - [Authors](#authors)
   - [Contributors](#contributors)
   - [License](#license)
@@ -96,10 +96,6 @@ The Task Reminder App is a simple yet powerful task management application that 
 - rxdart
 - permission_handler
 
-### Dev Dependencies
-
-- flutter_test
-- flutter_lints
 
 ## Getting Started
 A few resources to get you started if this is your first Flutter project:
@@ -134,7 +130,7 @@ For help getting started with Flutter, view
   ```sh
     flutter run
   ```
-## Authors
+<!-- ## Authors
   - [@4mritGiri](https://github.com/4mrit)
 
 ## Contributors
@@ -170,4 +166,4 @@ Distributed under the MIT License. See LICENSE for more information.
 - [Android Studio Documentation](https://developer.android.com/docs)
 - [Visual Studio Code Documentation](https://code.visualstudio.com/docs)
 - [GitHub Documentation](https://docs.github.com/en)
-- [Stack Overflow](https://stackoverflow.com/)
+- [Stack Overflow](https://stackoverflow.com/) -->
