@@ -33,11 +33,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
       .format(DateTime.now().add(const Duration(minutes: 10)))
       .toString();
 
-  int _selectedRemind = 0;
   List<int> remindList = [0, 5, 10, 15, 20, 25, 30];
 
   String _selectedRepeat = "None";
   List<String> repeatList = ["None", "Daily", "Weekly", "Monthly"];
+  List<String> priorityList = ["High", "Medium", "Low"];
+  String _selectedPriority = "High";
+  int _selectedRemind = 0;
 
   int _selectedColor = 0;
 
@@ -75,7 +77,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _titleBar(),
+              // _titleBar(),
               _inputField(),
             ],
           ),
@@ -86,6 +88,9 @@ class _AddTaskPageState extends State<AddTaskPage> {
 
   AppBar _appBar(BuildContext context) {
     return AppBar(
+      title: Text(widget.task == null ? "ADD TASK" : "UPDATE TASK",
+          style: headingStyle),
+      centerTitle: true,
       systemOverlayStyle: Get.isDarkMode
           ? SystemUiOverlayStyle.light
           : SystemUiOverlayStyle.dark,
@@ -105,13 +110,13 @@ class _AddTaskPageState extends State<AddTaskPage> {
         // const CircleAvatar(
         //   backgroundImage: AssetImage("images/avatar.png"),
         // ),
-        InputChip(
-          padding: const EdgeInsets.all(0),
-          label: Text(
-            deviceName ?? "Unknown",
-            style: subTitleStyle,
-          ),
-        ),
+        // InputChip(
+        //   padding: const EdgeInsets.all(0),
+        //   label: Text(
+        //     deviceName ?? "Unknown",
+        //     style: subTitleStyle,
+        //   ),
+        // ),
         IconButton(
           onPressed: () {},
           icon: Icon(
@@ -124,10 +129,10 @@ class _AddTaskPageState extends State<AddTaskPage> {
     );
   }
 
-  _titleBar() {
-    return Text(widget.task == null ? "Add Task" : "Update Task",
-        style: headingStyle);
-  }
+  // _titleBar() {
+  //   return Text(widget.task == null ? "Add Task" : "Update Task",
+  //       style: headingStyle);
+  // }
 
   _getDateFromUser() async {
     DateTime? pickerDate = await showDatePicker(
@@ -203,18 +208,62 @@ class _AddTaskPageState extends State<AddTaskPage> {
             hint: "Enter your note",
             controller: _noteController,
           ),
-          MyInputField(
-            title: "Date",
-            hint: DateFormat.yMd().format(_selectedDate),
-            widget: IconButton(
-              onPressed: () => {
-                _getDateFromUser(),
-              },
-              icon: const Icon(
-                Icons.calendar_month_outlined,
-                color: Colors.grey,
+          Row(
+            children: [
+              Expanded(
+                child: MyInputField(
+                  title: "Date",
+                  hint: DateFormat.yMd().format(_selectedDate),
+                  widget: IconButton(
+                    onPressed: () => {
+                      _getDateFromUser(),
+                    },
+                    icon: const Icon(
+                      Icons.calendar_month_outlined,
+                      color: Colors.grey,
+                    ),
+                  ),
+                ),
               ),
-            ),
+              const SizedBox(
+                width: 12,
+              ),
+              Expanded(
+                child: MyInputField(
+                  title: "Priority",
+                  hint: "$_selectedPriority",
+                  widget: DropdownButton(
+                    icon: const Icon(
+                      Icons.keyboard_arrow_down,
+                      color: Colors.grey,
+                    ),
+                    iconSize: 32,
+                    elevation: 4,
+                    padding: const EdgeInsets.only(right: 5),
+                    style: subTitleStyle,
+                    underline: Container(
+                      height: 0,
+                      color: Colors.transparent,
+                    ),
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        _selectedPriority = newValue!;
+                      });
+                    },
+                    items: priorityList
+                        .map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value.toString(),
+                        child: Text(
+                          "$value",
+                          style: subTitleStyle,
+                        ),
+                      );
+                    }).toList(),
+                  ),
+                ),
+              )
+            ],
           ),
           Row(
             children: [
@@ -254,7 +303,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
             ],
           ),
           MyInputField(
-            title: "Remind",
+            title: "Reminder",
             hint: "$_selectedRemind minutes early",
             widget: DropdownButton(
               icon: const Icon(

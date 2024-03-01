@@ -3,8 +3,8 @@ import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 const Color bluishColor = Color.fromARGB(255, 108, 92, 231);
-const Color yellowishColor = Color.fromARGB(255, 255, 207, 156);
-const Color pinkColor = Color.fromARGB(255, 255, 100, 128);
+const Color yellowishColor = Color.fromARGB(255, 255, 194, 51);
+const Color pinkColor = Color.fromARGB(255, 255, 86, 117);
 const Color white = Colors.white;
 const primaryColor = bluishColor;
 const Color darkGreyColor = Color(0xff121212);

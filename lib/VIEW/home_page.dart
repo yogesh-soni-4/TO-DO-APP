@@ -109,10 +109,12 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         padding: EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
-          color: Colors.grey[200],
+          color: !Get.isDarkMode ? Colors.grey[200] : Colors.grey[700],
           borderRadius: BorderRadius.circular(20),
         ),
         child: TextField(
+          style:
+              TextStyle(color: !Get.isDarkMode ? Colors.black87 : Colors.white),
           // onChanged: (value) => _runFilter(value),
           controller: _searchController,
           decoration: InputDecoration(
@@ -120,7 +122,7 @@ class _HomePageState extends State<HomePage> {
             suffixIcon: IconButton(
               icon: Icon(
                 !search ? Icons.search : Icons.close,
-                color: Colors.black87,
+                color: !Get.isDarkMode ? Colors.black87 : Colors.white,
                 size: 20,
               ),
               onPressed: () {
@@ -141,7 +143,8 @@ class _HomePageState extends State<HomePage> {
             ),
             border: InputBorder.none,
             hintText: 'Search',
-            labelStyle: TextStyle(color: Colors.grey[600]),
+            hintStyle: TextStyle(
+                color: !Get.isDarkMode ? Colors.grey[600] : Colors.white),
           ),
         ),
       ),
@@ -194,6 +197,12 @@ class _HomePageState extends State<HomePage> {
       leading: GestureDetector(
         onTap: () {
           themeServices.switchTheme();
+          notifyHelper.displayNotification(
+              title: "Theme Changed",
+              body: Get.isDarkMode
+                  ? "Light Theme Activated"
+                  : "Dark Theme Activated");
+          // notifyHelper.scheduledNotification();
         },
         child: themeServices.icon,
       ),
