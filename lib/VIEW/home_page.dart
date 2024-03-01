@@ -27,6 +27,9 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   List<Task> filterTaskList = [];
+  List<Task> searchList = [];
+
+  bool search = false;
 
   double? width;
   double? height;
@@ -44,6 +47,7 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     filterTaskList = _taskController.taskList;
+    searchList = _taskController.taskList;
     DeviceInfo deviceInfo = DeviceInfo();
     deviceInfo.getDeviceName().then((value) {
       setState(() {
@@ -84,11 +88,61 @@ class _HomePageState extends State<HomePage> {
         appBar: _appBar(themeServices),
         body: Column(
           children: [
+            SizedBox(height: 5),
+            searchBox(),
+            SizedBox(height: 10),
             _addTaskBar(),
             _dateBar(),
             const SizedBox(height: 10),
             _showTasks(),
           ],
+        ),
+      ),
+    );
+  }
+
+  final _searchController = TextEditingController();
+
+  Widget searchBox() {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: Container(
+        padding: EdgeInsets.symmetric(horizontal: 10),
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(20),
+        ),
+        child: TextField(
+          // onChanged: (value) => _runFilter(value),
+          controller: _searchController,
+          decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(0),
+            suffixIcon: IconButton(
+              icon: Icon(
+                !search ? Icons.search : Icons.close,
+                color: Colors.black87,
+                size: 20,
+              ),
+              onPressed: () {
+                setState(() {
+                  searchList =
+                      _searchNotes(filterTaskList, _searchController.text);
+                  search = !search;
+                  if (search == false) _searchController.clear();
+                });
+                print("THIS IS SEARCH RESULT : ${searchList.length}");
+                print("KEYWORD : ${_searchController.text}");
+                // print("THIS IS SEARCH BOOL : ${search}");
+              },
+            ),
+            suffixIconConstraints: BoxConstraints(
+              maxHeight: 29,
+              minWidth: 20,
+            ),
+            border: InputBorder.none,
+            hintText: 'Search',
+            labelStyle: TextStyle(color: Colors.grey[600]),
+          ),
         ),
       ),
     );
@@ -129,7 +183,7 @@ class _HomePageState extends State<HomePage> {
     return AppBar(
       title: Text(
         "TO DO APP",
-        style: TextStyle(),
+        style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
       ),
       centerTitle: true,
       systemOverlayStyle: Get.isDarkMode
@@ -140,35 +194,12 @@ class _HomePageState extends State<HomePage> {
       leading: GestureDetector(
         onTap: () {
           themeServices.switchTheme();
-          // notifyHelper.displayNotification(
-          //     title: "Theme Changed",
-          //     body: Get.isDarkMode
-          //         ? "Light Theme Activated"
-          //         : "Dark Theme Activated");
-          // notifyHelper.scheduledNotification();
         },
         child: themeServices.icon,
       ),
       actions: [
-        // const CircleAvatar(
-        //   backgroundImage: AssetImage("images/avatar.png"),
-        // ),
-        // InputChip(
-        //   padding: const EdgeInsets.all(0),
-        //   label: Text(
-        //     deviceName ?? "Unknown",
-        //     style: GoogleFonts.lato(
-        //       textStyle: const TextStyle(
-        //         fontSize: 16,
-        //         fontWeight: FontWeight.w600,
-        //         color: Colors.grey,
-        //       ),
-        //     ),
-        //   ),
-        //   onPressed: () {},
-        // ),
         IconButton(
-          padding: const EdgeInsets.all(0),
+          padding: const EdgeInsets.only(right: 20),
           onPressed: () {
             setState(() {
               // Sort the taskList when the sort button is pressed
@@ -192,62 +223,6 @@ class _HomePageState extends State<HomePage> {
               color: Get.isDarkMode ? Colors.white : Colors.black,
             ),
           ),
-        ),
-        // Stack(
-        //   children: <Widget>[
-        //     IconButton(
-        //       icon: const Icon(Icons.notifications),
-        //       onPressed: () {
-        //         Get.to(() => const NotificationPage());
-        //       },
-        //     ),
-        //     const Positioned(
-        //       right: 10,
-        //       top: 10,
-        //       child: Badge(
-        //         backgroundColor: Colors.red,
-        //         label: Text(
-        //           '4',
-        //           style: TextStyle(color: Colors.white),
-        //         ),
-        //       ),
-        //     ),
-        //   ],
-        // ),
-        PopupMenuButton<String>(
-          offset: const Offset(0, 25),
-          // color: Get.isDarkMode ? darkGreyColor : Colors.white,
-          icon: const Icon(Icons.more_vert),
-          padding: const EdgeInsets.symmetric(horizontal: 0),
-          tooltip: "More",
-          onSelected: (value) async {
-            if (value == "Export to CSV") {
-              // Export the taskList to CSV
-              await exportTasksToCSV(filterTaskList);
-            } else if (value == "Export to Excel") {
-              // Export the taskList to Excel
-              await exportTasksToExcel(filterTaskList);
-            } else if (value == "Save as PDF") {
-              // Export the taskList to PDF
-              await exportTasksToPDF(filterTaskList);
-            }
-          },
-          itemBuilder: (BuildContext context) {
-            return [
-              const PopupMenuItem(
-                value: "Export to CSV",
-                child: Text("Export to CSV"),
-              ),
-              const PopupMenuItem(
-                value: "Export to Excel",
-                child: Text("Export to Excel"),
-              ),
-              const PopupMenuItem(
-                value: "Save as PDF",
-                child: Text("Save as PDF"),
-              ),
-            ];
-          },
         ),
       ],
     );
@@ -294,13 +269,47 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
+  List<Task> _searchNotes(List<Task> taskList, String enteredKeyword) {
+    // taskList.sort((a, b) => a.updatedAt!.compareTo(b.updatedAt!));
+    return taskList
+        .where((item) =>
+            item.title.toLowerCase().contains(enteredKeyword.toLowerCase()))
+        .toList();
+  }
+
+  // List<ToDo> _foundToDo = [];
+  // List<Task> results = [];
+  // void _runFilter(String enteredKeyword) {
+  //   if (enteredKeyword.isEmpty) {
+  //     results = todosList;
+  //   } else {
+  //     results = todosList
+  //         .where((item) => item.todoText!
+  //             .toLowerCase()
+  //             .contains(enteredKeyword.toLowerCase()))
+  //         .toList();
+  //   }
+
+  //   setState(() {
+  //     _foundToDo = results;
+  //   });
+  // }
+
   _showTasks() {
     return Expanded(
       child: Obx(() {
         return ListView.builder(
-          itemCount: filterTaskList.length,
+          // itemCount: search ? searchList.length : filterTaskList.length,
+          // itemBuilder: (_, index) {
+          //   Task task = search
+          //       ? filterTaskList[filterTaskList.length - 1 - index]
+          //       : searchList[searchList.length - 1 - index];
+
+          itemCount: search ? searchList.length : filterTaskList.length,
           itemBuilder: (_, index) {
-            Task task = filterTaskList[filterTaskList.length - 1 - index];
+            Task task = !search
+                ? filterTaskList[filterTaskList.length - 1 - index]
+                : searchList[searchList.length - 1 - index];
 
             DateTime date = _parseDateTime(task.startTime.toString());
             var myTime = DateFormat.Hm().format(date);
@@ -477,65 +486,71 @@ class _HomePageState extends State<HomePage> {
         height: task.isCompleted == 1
             ? MediaQuery.of(context).size.height * 0.28
             : MediaQuery.of(context).size.height * 0.35,
-        color: Get.isDarkMode ? darkGreyColor : Colors.white,
-        child: Column(children: [
-          Container(
-            height: 6,
-            width: 120,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(10),
-              color: Get.isDarkMode ? Colors.grey[600] : Colors.grey[300],
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(20),
+          color: Get.isDarkMode ? darkGreyColor : Colors.white,
+        ),
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 15.0),
+          child: Column(children: [
+            Container(
+              height: 6,
+              width: 120,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(10),
+                color: Get.isDarkMode ? Colors.grey[600] : Colors.grey[300],
+              ),
             ),
-          ),
-          const Spacer(),
-          _bottomSheetButton(
-            label: " Update Task",
-            color: Colors.green[400]!,
-            onTap: () {
-              Get.back();
-              Get.to(() => AddTaskPage(task: task));
-            },
-            context: context,
-            icon: Icons.update,
-          ),
-          task.isCompleted == 1
-              ? Container()
-              : _bottomSheetButton(
-                  label: "Task Completed",
-                  color: primaryColor,
-                  onTap: () {
-                    Get.back();
-                    _taskController.markTaskAsCompleted(task.id!, true);
-                    _taskController.getTasks();
-                  },
-                  context: context,
-                  icon: Icons.check,
-                ),
-          _bottomSheetButton(
-            label: "Delete Task",
-            color: Colors.red[400]!,
-            onTap: () {
-              Get.back();
-              showDialog(
-                  context: context,
-                  builder: (_) => _alertDialogBox(context, task));
-              // _taskController.deleteTask(task.id!);
-            },
-            context: context,
-            icon: Icons.delete,
-          ),
-          const SizedBox(height: 15),
-          _bottomSheetButton(
-            label: "Close",
-            color: Colors.red[400]!.withOpacity(0.5),
-            isClose: true,
-            onTap: () {
-              Get.back();
-            },
-            context: context,
-            icon: Icons.close,
-          ),
-        ]),
+            const Spacer(),
+            _bottomSheetButton(
+              label: " Update Task",
+              color: Colors.green[400]!,
+              onTap: () {
+                Get.back();
+                Get.to(() => AddTaskPage(task: task));
+              },
+              context: context,
+              icon: Icons.update,
+            ),
+            task.isCompleted == 1
+                ? Container()
+                : _bottomSheetButton(
+                    label: "Task Completed",
+                    color: primaryColor,
+                    onTap: () {
+                      Get.back();
+                      _taskController.markTaskAsCompleted(task.id!, true);
+                      _taskController.getTasks();
+                    },
+                    context: context,
+                    icon: Icons.check,
+                  ),
+            _bottomSheetButton(
+              label: "Delete Task",
+              color: Colors.red[400]!,
+              onTap: () {
+                Get.back();
+                showDialog(
+                    context: context,
+                    builder: (_) => _alertDialogBox(context, task));
+                // _taskController.deleteTask(task.id!);
+              },
+              context: context,
+              icon: Icons.delete,
+            ),
+            const SizedBox(height: 0),
+            _bottomSheetButton(
+              label: "Close",
+              color: Colors.red[400]!.withOpacity(0.5),
+              isClose: true,
+              onTap: () {
+                Get.back();
+              },
+              context: context,
+              icon: Icons.close,
+            ),
+          ]),
+        ),
       ),
     );
   }
@@ -603,7 +618,7 @@ class _HomePageState extends State<HomePage> {
       child: Container(
         // alignment: Alignment.center,
         margin: const EdgeInsets.symmetric(vertical: 7),
-        height: 55,
+        height: 50,
         width: MediaQuery.of(context).size.width * 0.9,
 
         decoration: BoxDecoration(
