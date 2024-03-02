@@ -23,7 +23,7 @@ The DAY PALNNER APP is a simple yet powerful task management application that en
 ### Screenshots
 
 - **Home Screen**
-  <img src="[https://your-image-url.type](https://github.com/yogesh-soni-4/TO-DO-APP/assets/112860792/e5935744-8911-4dc2-8652-23a2168071b9)" width="60%" height="50%">
+  <img src="https://github.com/yogesh-soni-4/TO-DO-APP/assets/112860792/e5935744-8911-4dc2-8652-23a2168071b9" width="60%" height="50%">
   
  ![WhatsApp Image 2024-03-02 at 09 33 31_c6eac2aa](https://github.com/yogesh-soni-4/TO-DO-APP/assets/112860792/e5935744-8911-4dc2-8652-23a2168071b9)
  
