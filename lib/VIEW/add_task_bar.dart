@@ -239,7 +239,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
                     ),
                     iconSize: 32,
                     elevation: 4,
-                    padding: const EdgeInsets.only(right: 5),
+                    // padding: const EdgeInsets.only(right: 5),
                     style: subTitleStyle,
                     underline: Container(
                       height: 0,
@@ -312,7 +312,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               iconSize: 32,
               elevation: 4,
-              padding: const EdgeInsets.only(right: 5),
+              // padding: const EdgeInsets.only(right: 5),
               style: subTitleStyle,
               underline: Container(
                 height: 0,
@@ -344,7 +344,7 @@ class _AddTaskPageState extends State<AddTaskPage> {
               ),
               iconSize: 32,
               elevation: 4,
-              padding: const EdgeInsets.only(right: 5),
+              // padding: const EdgeInsets.only(right: 5),
               style: subTitleStyle,
               underline: Container(
                 height: 0,
