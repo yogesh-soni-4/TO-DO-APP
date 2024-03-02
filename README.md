@@ -1,4 +1,4 @@
-# Task Reminder App
+# DAY PLANNER APP 📝
 
 ## Description
 
@@ -15,5 +15,27 @@ The DAY PALNNER APP is a simple yet powerful task management application that en
 - Dark Mode & Light Mode
 - Responsive Design
 
-## Demo
-[🚀 DAY PALNNER APP download ⬇️📍](https://github.com/4mritGiri/Task_Reminder_Apps/releases/download/v1.3.0/TaskReminder.apk)
+## Built with
+### Dependencies
+- Flutter
+- cupertino_icons
+- intl
+- path_provider
+- sqflite
+- flutter_local_notifications
+- date_picker_timeline
+- get_storage
+- get
+- flutter_timezone
+- timezone
+- flutter_staggered_animations
+- google_fonts
+- rxdart
+- permission_handler
+### Dev Dependencies
+- flutter_test
+- flutter_lints
+  
+## Snapshots
+![image](https://github.com/yogesh-soni-4/TO-DO-APP/assets/112860792/09e82ef4-60e2-4958-abf8-3dae72cfbc86)
+
